@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Vimeo API</title>
+  <link rel="stylesheet/less" type="text/css" href="less/index.less" />
+</head>
+<body>
+<!--
+<iframe id="player" class="iframe-vimeo-player" src="http://player.vimeo.com/video/87882921?api=1&amp;player_id=player" width="100%" height="100%" frameborder="0"></iframe>
+-->
+<!-- Le Video Modal -->
+<div id="videoModal" class="modal fade bs-video-modal-lg" tabindex="-1" role="dialog" aria-labelledby="Video | Dermo Products" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- yuotube <div id="player" class="video-player"></div> -->
+    </div>
+  </div>
+</div>
+<div class="wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h2 class="videotitle">Vimeo Player
+          <span class="status">!</span>
+        </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="video-content">
+          <div class="video-holder">
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <h5>Console</h5>
+        <div class="console">
+          <textarea class="output form-control" readonly="readonly">
+          </textarea>
+        </div>
+        <div class="listeners">
+          <h5>Event Listeners</h5>
+          <div class="btn-group btn-group-justified">
+            <label class="checkbox-inline">
+              <input type="checkbox"class="loadProgress" checked> loadProgress
+            </label>
+            <label class="checkbox-inline">
+              <input class="playProgress" type="checkbox" checked> playProgress
+            </label>
+            <label class="checkbox-inline">
+              <input class="playCheck" type="checkbox" checked> play
+            </label>
+            <label class="checkbox-inline">
+              <input class="pauseCheck" type="checkbox" checked> pause
+            </label>
+            <label class="checkbox-inline">
+              <input class="finishCheck" type="checkbox" checked> finish
+            </label>
+            <label class="checkbox-inline">
+              <input class="seekCheck" type="checkbox" checked> seek
+            </label>
+          </div>
+        </div>
+        <div class="console">
+          <a class="clear btn btn-default">Clear</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="simple">
+          <h5>Simple Buttons <span>(buttons with simple API calls)</span></h5>
+          <div class="btn-group btn-group-justified">
+            <a class="btn btn-default btn-lg btn-video" data-vimeo="87882921">Modal</a>
+            <a class="play btn btn-lg btn-default">Play</a>
+            <a class="pause btn btn-lg btn-default">Pause</a>
+            <a class="unload btn btn-lg btn-default">Unload</a>
+          </div>
+        </div>
+        <div class="modifiers">
+          <h5>Modifier Buttons <span>(buttons that modify the player)</span></h5>
+          <div class="btn-group btn-group-justified">
+            <a class="btn btn-default addClip" title="Add a new clip.">
+              <input type="text" class="form-control" value="87882921" size="8">Video</a>
+            <a class="seek btn btn-default"> 
+              <input type="text" class="form-control" value="30" size="3" maxlength="3">Seek</a>
+            <a class="volume btn btn-default"> 
+              <input type="text" class="form-control" value="0.5" size="3" maxlength="3">Volume</a>
+            <a class="loop btn btn-default"> 
+              <input type="text" class="form-control" value="0" size="1" maxlength="1">Loop</a>
+            <a class="color btn btn-default" data-value="00adef"> 
+              <input type="text" class="form-control" value="00adef" size="5">Color</a>
+            <a class="randomColor btn btn-default">
+              <input type="text" class="form-control" value="00adef" size="5">Random Color</a>
+          </div>
+        </div>
+
+        <div class="getters">
+          <h5>Getters <span>(buttons that get back a value; logged out in the console)</span></h5>
+          <div class="btn-group btn-group-justified">
+            <a class="time btn btn-default">Current Time</a>
+            <a class="duration btn btn-default">Duration</a>
+            <a class="getColor btn btn-default">Color</a>
+            <a class="url btn btn-default">URL</a>
+            <a class="embed btn btn-default">Embed Code</a>
+            <a class="paused btn btn-default">Paused</a>
+            <a class="getVolume btn btn-default">Volume</a>
+            <a class="height btn btn-default">Height</a>
+            <a class="width btn btn-default">Width</a>
+          </div>
+        </div>
+
+      </div><!-- end cols -->
+    </div>
+  </div>
+</div>
+  <!-- Libs -->
+  <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+  <script src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js'></script>
+  <script src='lib/froogaloop.min.js'></script>
+
+  <!-- Developing -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.6.3/coffee-script.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.4.1/less.min.js"></script>
+  <!-- Scripts -->
+  <script type="text/coffeescript" src="coffeescript/index.coffee"></script>
+
+</body>
+
+</html>
