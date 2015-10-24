@@ -5,7 +5,7 @@
 
 (($) =>
 
-  videoDefault = '87882921'
+  videoDefault = '143452017'
   iframe = $("#player")[0]
   player = $f(iframe)
   ###
@@ -18,15 +18,15 @@
   #player.api 'setColor', '#4090a0'
 
   #Resize
-  
+
   $(window).on 'debouncedresize.video', ->
-    modalHeight = $('.modal-content').height()      
+    modalHeight = $('.modal-content').height()
     modalWidth = $('.modal-content').width()
     playerWidth = modalWidth
     playerHeight = modalWidth * (506 / 900)
     @$('.modal-content').css
       height: playerHeight
-    , 333 
+    , 333
     #$('.modal-content').height playerHeight
     $('#player').css
       height: playerHeight
@@ -45,12 +45,12 @@
     $('.btn-video').on 'click', ->
       $('#videoModal').modal 'toggle'
 
-  # Play Pause Modal Events 
+  # Play Pause Modal Events
 
   $('#videoModal').on 'shown.bs.modal', (e) ->
     $(window).trigger 'debouncedresize.video'
     player.api 'play'
-  
+
   $('#videoModal').on 'hide.bs.modal', (e) ->
     player.api 'pause'
 
