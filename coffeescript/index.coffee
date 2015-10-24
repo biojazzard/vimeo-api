@@ -6,9 +6,6 @@
 (($) =>
 
   videoDefault = '143452017'
-  # videoHolder div parent > iframe
-  videoHolder = $('.video-holder')
-  modalContent = $('.modal-content')
   iframeVideo = undefined
   playerID = 'player'
   player = undefined
@@ -346,7 +343,7 @@
         currentIndex = Math.floor(Math.random() * 10)
         clipId = $(@).find('input').attr('value')
         $('.btn-video').attr('data-vimeo', clipId)
-        _initVideo $('.video-holder')
+        _initVideo $('.video-content')
 
         ###
         container.html ''
@@ -367,7 +364,13 @@
     UI
     ###
 
-    if container.parent().hasClass('modal-content')
+
+
+    if container.parent().hasClass('video-content-modal')
+
+      # Bind Click
+      $('.btn-video').on 'click', ->
+        $('#videoModal').modal 'toggle'
 
       $('.modal').on 'shown.bs.modal', (e) ->
         _resizeVideo container, 1280, 720
@@ -424,7 +427,7 @@
     $holder.children().first().css
       height: playerHeight
 
-  _initVideo = (videoHolderDiv) ->
+  _initVideo = (videoHolderDiv, modal='') ->
 
     # Get the video ID from markup
 
@@ -434,9 +437,6 @@
         videoHash = $('.btn-video').attr('data-vimeo')
       else
         videoHash = videoDefault
-      # Bind Click
-      $('.btn-video').on 'click', ->
-        $('#videoModal').modal 'toggle'
 
     # Builder
 
@@ -444,16 +444,24 @@
       iframeVideo = videoHolderDiv.children().first()
     else
       iframeVideo = $('<iframe>')
-      iframeVideoModal = $('<iframe>')
 
       iframeVideo.attr
-        id: playerID
+        id: playerID + modal
         class: 'iframe-vimeo-player'
         width: '100%'
         height: '100%'
         frameborder: '0'
-        src: 'http://player.vimeo.com/video/' + videoHash + '?api=1&player_id=' + playerID
-      iframeVideo.appendTo videoHolderDiv
+        src: 'http://player.vimeo.com/video/' + videoHash + '?api=1&player_id=' + playerID + modal
+
+      videoHolder = $('<div class="video-holder"></div>')
+
+      iframeVideo.appendTo videoHolder
+
+      videoHolder.appendTo videoHolderDiv
+
+      ###
+
+      iframeVideoModal = $('<iframe>')
 
       iframeVideoModal.attr
         id: playerID + '_modal'
@@ -462,10 +470,14 @@
         height: '100%'
         frameborder: '0'
         src: 'http://player.vimeo.com/video/' + videoHash + '?api=1&player_id=' + playerID + '_modal'
+
       videoHolderModal = $('<div class="video-holder"></div>')
+
       iframeVideoModal.appendTo videoHolderModal
 
       videoHolderModal.appendTo modalContent
+
+      ###
 
     $('.iframe-vimeo-player').each ->
       player = @
@@ -473,7 +485,8 @@
       $f(player).addEvent 'ready', ready
 
   # Let´s go!
-  _initVideo $('.video-holder')
+  _initVideo $('.video-content'), ''
+  _initVideo $('.video-content-modal'), '_modal'
 
 
 )(jQuery)
