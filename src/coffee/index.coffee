@@ -364,8 +364,6 @@
     UI
     ###
 
-
-
     if container.parent().hasClass('video-content-modal')
 
       # Bind Click
@@ -373,19 +371,19 @@
         $('#videoModal').modal 'toggle'
 
       $('.modal').on 'shown.bs.modal', (e) ->
-        _resizeVideo container, 1280, 720
         froogaloop.api 'play'
+        _resizeVideo container, 1920, 1080
         #playVideo()
 
       $('.modal').on 'hide.bs.modal', (e) ->
         froogaloop.api 'pause'
 
-      $(window).on 'resize', ->
-        _resizeVideo container, 1280, 720
+      $(window).on 'debouncedresize.vimeo', ->
+        _resizeVideo container, 1920, 1080
 
     else
-      $(window).on 'resize', ->
-        _resizeVideo container, 1280, 720
+      $(window).on 'debouncedresize.vimeo', ->
+        _resizeVideo container, 1920, 1080
 
     ###
     Actions
@@ -396,7 +394,18 @@
     setupGetterButtons()
     setupEventListeners()
     setupAddClip()
-    _resizeVideo container, 1280, 720
+
+    froogaloop.api 'setLoop', 1
+
+    #froogaloop.api 'play'
+
+    setTimeout ()->
+      froogaloop.api 'play'
+    , 1000
+
+    #$('#videoModal').modal 'toggle'
+
+    $(window).trigger 'debouncedresize.vimeo'
 
     # Setup clear console button
     clearBtn = $('.clear')
@@ -415,7 +424,7 @@
   onPlayProgress = (data, id) ->
     console.log data.seconds + 's played'
 
-  _resizeVideo = ($holder, vidWidth = 1280, vHeight = 720)->
+  _resizeVideo = ($holder, vidWidth = 1920, vHeight = 1080)->
 
     holderHeight = $holder.height()
     holderWidth = $holder.width()
@@ -426,6 +435,32 @@
     #$('.modal-content').height playerHeight
     $holder.children().first().css
       height: playerHeight
+
+  _resizeVideoFS = ($holder, vidWidth = 1920, vHeight = 1080)->
+
+    holderHeight = $holder.height()
+    holderWidth = $holder.width()
+    if $(window).width() / $(window).height() > (vidWidth / vHeight)
+      playerWidth = Math.floor $(window).width()
+      playerHeight = Math.floor playerWidth / (vidWidth / vHeight)
+      topPos= -Math.floor (playerHeight - $(window).height())/2
+      leftPos= 0
+    else
+      playerHeight = Math.floor $(window).height()
+      playerWidth = Math.floor playerHeight * (vidWidth / vHeight)
+      topPos= 0
+      leftPos= -Math.floor (playerWidth - $(window).width())/2
+
+    $holder.css
+      position: 'absolute'
+      height: playerHeight
+      width: playerWidth
+      left: leftPos
+      top: topPos
+
+    $holder.children().first().css
+      height: playerHeight
+      width: playerWidth
 
   _initVideo = (videoHolderDiv, modal='') ->
 
@@ -458,26 +493,6 @@
       iframeVideo.appendTo videoHolder
 
       videoHolder.appendTo videoHolderDiv
-
-      ###
-
-      iframeVideoModal = $('<iframe>')
-
-      iframeVideoModal.attr
-        id: playerID + '_modal'
-        class: 'iframe-vimeo-player'
-        width: '100%'
-        height: '100%'
-        frameborder: '0'
-        src: 'http://player.vimeo.com/video/' + videoHash + '?api=1&player_id=' + playerID + '_modal'
-
-      videoHolderModal = $('<div class="video-holder"></div>')
-
-      iframeVideoModal.appendTo videoHolderModal
-
-      videoHolderModal.appendTo modalContent
-
-      ###
 
     $('.iframe-vimeo-player').each ->
       player = @
